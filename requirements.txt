@@ -1,0 +1,6 @@
+psycopg2-binary
+kafka-python
+google-generativeai
+fastapi
+uvicorn
+websockets

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGuard Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="icon">🛡️</span>
+                <h1>OmniGuard</h1>
+            </div>
+            <div class="status-indicator">
+                <span class="dot"></span>
+                <span id="connection-status">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-grid">
+            
+            <!-- Sidebar: Settings & Simulator -->
+            <aside class="sidebar">
+                <!-- Settings Panel -->
+                <div class="panel settings-panel">
+                    <h2>Settings</h2>
+                    <div class="control-group">
+                        <label>Tracking Sources</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" checked id="chk-earthquakes"> Earthquakes</label>
+                            <label><input type="checkbox" disabled> Weather Alerts (Soon)</label>
+                            <label><input type="checkbox" disabled> Wildfires (Soon)</label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Alert Radius: <span id="radius-val">500</span> km</label>
+                        <input type="range" id="radius-slider" min="50" max="2000" value="500">
+                    </div>
+                    <button id="btn-save" class="btn primary">Save Preferences</button>
+                </div>
+
+                <!-- Simulator Panel -->
+                <div class="panel simulator-panel">
+                    <h2>Event Simulator</h2>
+                    <div class="control-group">
+                        <label>Event Type</label>
+                        <select id="sim-type">
+                            <option value="earthquake">Earthquake</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Magnitude: <span id="mag-val">7.0</span></label>
+                        <input type="range" id="mag-slider" min="1.0" max="9.0" step="0.1" value="7.0">
+                    </div>
+                    <button id="btn-simulate" class="btn danger">Simulate Event Near Me</button>
+                </div>
+            </aside>
+
+            <!-- Map Section -->
+            <section class="map-section">
+                <div id="map"></div>
+            </section>
+
+            <!-- Event Feed -->
+            <aside class="feed-panel">
+                <h2>Live Feed</h2>
+                <div id="event-list" class="event-list">
+                    <!-- Events will be injected here -->
+                    <div class="empty-state">Waiting for events...</div>
+                </div>
+            </aside>
+
+        </main>
+
+        <!-- Alert Overlay -->
+        <div id="alert-overlay" class="alert-overlay hidden">
+            <div class="alert-card">
+                <div class="alert-header">
+                    <span class="alert-icon">🚨</span>
+                    <h2 id="alert-title">EARTHQUAKE WARNING</h2>
+                </div>
+                <div class="alert-body">
+                    <p id="alert-details">Magnitude 7.0 Earthquake detected 50km away.</p>
+                    <div class="ai-guidance">
+                        <h3>AI Safety Guidance</h3>
+                        <div id="ai-steps">
+                            <!-- AI steps injected here -->
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-dismiss" class="btn secondary">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
