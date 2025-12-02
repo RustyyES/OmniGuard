@@ -15,6 +15,7 @@
 *   **⚡ Real-Time Ingestion:** Continuously polls USGS for earthquake data every 30 seconds.
 *   **📍 "Near Me" Filtering:** Automatically detects events within a configurable radius of the user.
 *   **🤖 AI-Powered Guidance:** Integrates with **Google Gemini AI** to provide instant, context-aware safety advice for significant events.
+*   **💬 AI Chat Assistant:** Interactive chat interface to ask follow-up questions and get personalized safety advice during emergencies.
 *   **🗺️ Interactive Dashboard:** Live Leaflet.js map with dynamic markers, radius visualization, and real-time event feeds via WebSockets.
 *   **🛡️ Resilient Architecture:** Built on **Apache Kafka** to ensure data reliability and decoupling between ingestion and processing.
 *   **💾 Historical Data:** Persists all events in **PostgreSQL (PostGIS)** for future analysis.
@@ -98,6 +99,7 @@ graph TD
 *   **Map View:** Shows your location (blue circle) and recent earthquakes (red markers).
 *   **Live Feed:** Updates instantly as new data arrives.
 *   **Alerts:** If a dangerous event is detected near you, a red alert overlay will appear with AI-generated advice.
+*   **AI Chat:** Use the chat interface in the alert overlay to ask specific questions like "Where is the nearest shelter?" or "How do I turn off gas?".
 
 ### 2. Simulation Mode
 Want to test the alerts without waiting for a real earthquake?

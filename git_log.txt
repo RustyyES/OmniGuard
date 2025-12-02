@@ -1,0 +1,29 @@
+commit 8a8479c13780f69a9b63ba4fd6db92c8c717e903
+Author: RustyyES <eiad222101239@ksiu.edu.eg>
+Date:   Tue Dec 2 21:27:15 2025 +0200
+
+    Stop tracking .env
+
+commit 43a77ae554ac3d6df510ae82ebaea334baa9b13b
+Author: RustyyES <eiad222101239@ksiu.edu.eg>
+Date:   Tue Dec 2 21:22:39 2025 +0200
+
+    remove
+
+commit 72bec71ff4f0a0974d09b935e18feb13beb4efcd
+Author: RustyyES <eiad222101239@ksiu.edu.eg>
+Date:   Tue Dec 2 21:19:06 2025 +0200
+
+    Finale v1
+
+commit 49844676747de3e37e755c6252c971dd3ea3995d
+Author: RustyyES <eiad222101239@ksiu.edu.eg>
+Date:   Sun Nov 30 20:43:58 2025 +0200
+
+    readme updated
+
+commit 5544df1a2c9606fde823b759e3df27927bd69cba
+Author: RustyyES <eiad222101239@ksiu.edu.eg>
+Date:   Sun Nov 30 20:39:15 2025 +0200
+
+    good start

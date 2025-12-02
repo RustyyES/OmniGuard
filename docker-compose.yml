@@ -76,6 +76,7 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - DB_USER=${POSTGRES_USER}
       - DB_PASS=${POSTGRES_PASSWORD}
+      - GEMINI_KEY=${GEMINI_KEY}
       - KAFKA_BROKER=kafka:9092
       - MY_LAT=${MY_LAT:-30.0444}
       - MY_LON=${MY_LON:-31.2357}

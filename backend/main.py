@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from kafka import KafkaConsumer, KafkaProducer
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import google.generativeai as genai
 
 # --- CONFIGURATION ---
 DB_HOST = os.environ.get("DB_HOST", "db")
@@ -19,6 +20,14 @@ DB_PASS = os.environ.get("DB_PASS", "password")
 KAFKA_BROKER = os.environ.get("KAFKA_BROKER", "kafka:9092")
 MY_LAT = float(os.environ.get("MY_LAT", "30.0444"))
 MY_LON = float(os.environ.get("MY_LON", "31.2357"))
+GEMINI_KEY = os.environ.get("GEMINI_KEY")
+
+if GEMINI_KEY:
+    genai.configure(api_key=GEMINI_KEY)
+    model = genai.GenerativeModel('gemini-2.5-pro')
+else:
+    model = None
+    print("WARNING: GEMINI_KEY not set. AI features will be disabled.")
 
 app = FastAPI()
 
@@ -153,8 +162,27 @@ async def get_events():
     except Exception as e:
         return {"error": str(e)}
 
+@app.delete("/api/events/{event_id}")
+async def delete_event(event_id: str):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        # Delete by external_id (which stores our UUID)
+        cur.execute("DELETE FROM earthquakes WHERE external_id = %s", (event_id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"status": "deleted", "id": event_id}
+    except Exception as e:
+        return {"error": str(e)}
+
+from pydantic import BaseModel
+
+class SimulateRequest(BaseModel):
+    magnitude: float
+
 @app.post("/api/simulate")
-async def simulate_event():
+async def simulate_event(request: SimulateRequest):
     try:
         producer = KafkaProducer(
             bootstrap_servers=[KAFKA_BROKER],
@@ -172,20 +200,70 @@ async def simulate_event():
         lat_offset = random.uniform(-0.5, 0.5)
         lon_offset = random.uniform(-0.5, 0.5)
         
+        # Generate AI Advice immediately
+        ai_advice = "AI Service Unavailable. Please check your GEMINI_KEY in .env. \n\nStandard Safety Protocol:\n1. DROP, COVER, and HOLD ON immediately.\n2. Stay away from glass, windows, and heavy furniture.\n3. If outdoors, move to a clear area away from buildings, trees, and power lines.\n4. Do not use elevators."
+        if model:
+            try:
+                prompt = f"""
+                You are an emergency response AI. 
+                A Magnitude {request.magnitude} earthquake occurred.
+                Give 3 specific, actionable steps for someone nearby.
+                Keep it short (max 50 words).
+                """
+                ai_resp = model.generate_content(prompt)
+                ai_advice = ai_resp.text
+            except Exception as e:
+                print(f"AI Generation Error: {e}")
+
+        import uuid
         fake_event = {
+            "id": str(uuid.uuid4()),
             "source": "SIMULATION_WEB",
             "type": "Earthquake",
-            "magnitude": round(random.uniform(4.5, 9.0), 1),
+            "magnitude": request.magnitude,
             "location": "WEB SIMULATED QUAKE",
             "time": int(time.time() * 1000),
             "coords": [MY_LON + lon_offset, MY_LAT + lat_offset, 10.0],
             "alert": "red",
-            "url": "#"
+            "url": "#",
+            "ai_guidance": ai_advice
         }
         
         producer.send("disaster_events", fake_event)
         return {"status": "simulated", "event": fake_event}
         
+    except Exception as e:
+        return {"error": str(e)}
+
+class ChatRequest(BaseModel):
+    message: str
+    context: dict = {}
+
+@app.post("/api/chat")
+async def chat_with_ai(request: ChatRequest):
+    if not model:
+        return {"response": "AI service is not configured."}
+    
+    try:
+        # Construct prompt with context
+        event_context = ""
+        if request.context:
+            event_context = f"Context: User is asking about a {request.context.get('type', 'event')} at {request.context.get('place', 'unknown location')} with magnitude {request.context.get('magnitude', 'unknown')}."
+        
+        prompt = f"""
+        You are OmniGuard AI, an empathetic and helpful emergency assistant.
+        {event_context}
+        User: {request.message}
+        
+        Instructions:
+        1. Be calm, reassuring, and concise (max 50 words).
+        2. Speak naturally like a human helper, not a robot.
+        3. Acknowledge the user's specific situation or fear.
+        4. Provide immediate, actionable safety advice.
+        """
+        
+        response = model.generate_content(prompt)
+        return {"response": response.text}
     except Exception as e:
         return {"error": str(e)}
 

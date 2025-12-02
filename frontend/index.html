@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniGuard Dashboard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=2">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Header -->
@@ -24,7 +26,7 @@
 
         <!-- Main Content -->
         <main class="dashboard-grid">
-            
+
             <!-- Sidebar: Settings & Simulator -->
             <aside class="sidebar">
                 <!-- Settings Panel -->
@@ -59,6 +61,8 @@
                         <input type="range" id="mag-slider" min="1.0" max="9.0" step="0.1" value="7.0">
                     </div>
                     <button id="btn-simulate" class="btn danger">Simulate Event Near Me</button>
+                    <button id="btn-clear-sim" class="btn secondary hidden" style="margin-top: 10px;">Clear
+                        Simulation</button>
                 </div>
             </aside>
 
@@ -79,27 +83,43 @@
         </main>
 
         <!-- Alert Overlay -->
+        <!-- Glassmorphism Alert Overlay -->
         <div id="alert-overlay" class="alert-overlay hidden">
-            <div class="alert-card">
+            <div class="glass-card">
+                <button id="btn-dismiss" class="btn-close">&times;</button>
+
                 <div class="alert-header">
-                    <span class="alert-icon">🚨</span>
-                    <h2 id="alert-title">EARTHQUAKE WARNING</h2>
+                    <div class="alert-icon">🚨</div>
+                    <div class="alert-title">
+                        <h2 id="alert-title">Earthquake Warning</h2>
+                        <p id="alert-details">Analyzing seismic data...</p>
+                    </div>
                 </div>
-                <div class="alert-body">
-                    <p id="alert-details">Magnitude 7.0 Earthquake detected 50km away.</p>
-                    <div class="ai-guidance">
-                        <h3>AI Safety Guidance</h3>
-                        <div id="ai-steps">
-                            <!-- AI steps injected here -->
+
+                <div class="alert-content">
+                    <div class="ai-section">
+                        <div class="ai-label">AI Safety Guidance</div>
+                        <div id="ai-steps" class="ai-text"></div>
+                    </div>
+
+                    <div class="chat-section" id="chat-section">
+                        <div class="chat-history" id="chat-history">
+                            <!-- Chat messages will appear here -->
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chat-input" class="chat-input"
+                                placeholder="Ask follow-up questions..." autocomplete="off">
+                            <button id="btn-send-chat" class="btn-send">Send</button>
                         </div>
                     </div>
                 </div>
-                <button id="btn-dismiss" class="btn secondary">Dismiss</button>
             </div>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="/static/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/app.js?v=4"></script>
 </body>
+
 </html>

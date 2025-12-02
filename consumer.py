@@ -117,9 +117,10 @@ if __name__ == "__main__":
         # 1. SAVE TO DATABASE
         try:
             cur.execute("""
-                INSERT INTO earthquakes (place, magnitude, time, lat, lon, alert_level, ai_guidance)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO earthquakes (external_id, place, magnitude, time, lat, lon, alert_level, ai_guidance)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """, (
+                event.get('id'), # Save ID to external_id
                 event['location'], 
                 event['magnitude'], 
                 event['time'], 
