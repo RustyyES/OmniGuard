@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
-![Python](https://img.shields.io/badge/Python-3.9+-yellow)
+![Python](https://img.shields.io/badge/Python-3.13+-yellow)
 ![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688)
 ![Kafka](https://img.shields.io/badge/Event%20Bus-Apache%20Kafka-black)
 
@@ -117,7 +117,7 @@ docker compose exec backend python view_db.py
 
 ## 🔧 Tech Stack
 
-*   **Language:** Python 3.9
+*   **Language:** Python 3.13
 *   **Web Framework:** FastAPI
 *   **Message Broker:** Apache Kafka & Zookeeper
 *   **Database:** PostgreSQL 15 + PostGIS
