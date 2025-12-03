@@ -81,7 +81,13 @@ graph TD
     cd omniguard
     ```
 
-2.  **Start the System:**
+2.  **Configure the System:**
+    Run the setup script to configure your API key and environment:
+    ```bash
+    ./setup.sh
+    ```
+
+3.  **Start the System:**
     Run the entire stack with a single command:
     ```bash
     docker compose up --build -d
