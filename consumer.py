@@ -21,7 +21,7 @@ ALERT_RADIUS_KM = 500.0
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-2.0-flash')
 
 # Mock Users Database (Simulating what would be in your Users table)
 # We put one user in Japan (High Risk) and one in Egypt (Safe)
