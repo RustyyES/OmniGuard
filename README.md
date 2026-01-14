@@ -1,138 +1,149 @@
-# 🌍 OmniGuard: Intelligent Disaster Monitoring System
+# OmniGuard: Intelligent Disaster Monitoring System
 
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
-![Python](https://img.shields.io/badge/Python-3.13+-yellow)
-![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688)
-![Kafka](https://img.shields.io/badge/Event%20Bus-Apache%20Kafka-black)
-
-**OmniGuard** is a real-time, multi-source disaster monitoring platform designed to provide immediate situational awareness and personalized safety guidance. It aggregates data from global sources (like USGS), processes it instantly using event-driven architecture, and visualizes it on an interactive dashboard.
+**OmniGuard** is a real-time, multi-source disaster monitoring platform designed to provide immediate situational awareness and automated safety guidance. It aggregates data from global seismic sources (such as USGS), processes it via an event-driven architecture, and visualizes critical information on an interactive dashboard.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-*   **⚡ Real-Time Ingestion:** Continuously polls USGS for earthquake data every 30 seconds.
-*   **📍 "Near Me" Filtering:** Automatically detects events within a configurable radius of the user.
-*   **🤖 AI-Powered Guidance:** Integrates with **Google Gemini AI** to provide instant, context-aware safety advice for significant events.
-*   **💬 AI Chat Assistant:** Interactive chat interface to ask follow-up questions and get personalized safety advice during emergencies.
-*   **🗺️ Interactive Dashboard:** Live Leaflet.js map with dynamic markers, radius visualization, and real-time event feeds via WebSockets.
-*   **🛡️ Resilient Architecture:** Built on **Apache Kafka** to ensure data reliability and decoupling between ingestion and processing.
-*   **💾 Historical Data:** Persists all events in **PostgreSQL (PostGIS)** for future analysis.
+* **Real-Time Ingestion:** Continuously monitors USGS earthquake data with 30-second polling intervals.
+* **Proximity Filtering:** Automatically identifies events within a configurable radius of the user's location.
+* **AI-Powered Guidance:** Leverages **Google Gemini AI** to provide instant, context-aware safety protocols for significant events.
+* **AI Chat Assistant:** Interactive interface for follow-up inquiries and personalized emergency advice.
+* **Interactive Dashboard:** Features a live Leaflet.js map with dynamic markers, radius visualization, and real-time event feeds via WebSockets.
+* **Resilient Architecture:** Utilizes **Apache Kafka** to ensure data reliability and decoupling between ingestion and processing layers.
+* **Data Persistence:** Records all event data in **PostgreSQL (PostGIS)** for historical analysis and reporting.
 
 ---
 
-## 🛠️ System Architecture
+## System Architecture
 
-OmniGuard uses a microservices-based architecture containerized with Docker.
+OmniGuard utilizes a containerized microservices architecture to ensure scalability and reliability.
 
 ```mermaid
 graph TD
     subgraph "External World"
-        USGS[📡 USGS API]
+        USGS[USGS API]
     end
 
     subgraph "OmniGuard Core"
-        P[🔄 Producer] -->|Ingest| K{Apache Kafka}
-        K -->|Stream| C[🧠 Smart Consumer]
-        K -->|Stream| B[🚀 FastAPI Backend]
+        P[Producer] -->|Ingest| K{Apache Kafka}
+        K -->|Stream| C[Smart Consumer]
+        K -->|Stream| B[FastAPI Backend]
         
-        C -->|AI Analysis| Gemini[✨ Google Gemini]
-        C -->|Persist| DB[(🐘 PostgreSQL)]
+        C -->|AI Analysis| Gemini[Google Gemini]
+        C -->|Persist| DB[(PostgreSQL)]
         
         B -->|Query| DB
-        B <-->|WebSocket| UI[💻 Web Dashboard]
+        B <-->|WebSocket| UI[Web Dashboard]
     end
     
     USGS --> P
+
 ```
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```text
-📂 gradproj/
-├── 📂 backend/          # FastAPI Backend & WebSocket Manager
+gradproj/
+├── backend/            # FastAPI Backend & WebSocket Manager
 │   └── main.py
-├── 📂 frontend/         # Web Dashboard (HTML/CSS/JS)
+├── frontend/           # Web Dashboard (HTML/CSS/JS)
 │   ├── index.html
 │   ├── style.css
 │   └── app.js
-├── 📜 consumer.py       # Smart Processing Service (AI & DB)
-├── 📜 producer.py       # Data Ingestion Service (USGS)
-├── 📜 docker-compose.yml# Container Orchestration
-├── 📜 view_db.py        # Utility to inspect database
-└── 📜 implementation_details.md # Deep dive into technical specs
+├── consumer.py         # Smart Processing Service (AI & DB)
+├── producer.py         # Data Ingestion Service (USGS)
+├── docker-compose.yml  # Container Orchestration
+├── view_db.py          # Database Inspection Utility
+└── implementation_details.md # Technical Specifications
+
 ```
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 ### Prerequisites
-*   **Docker** and **Docker Compose** installed on your machine.
 
-### Installation & Running
+* **Docker** and **Docker Compose** must be installed on the host machine.
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/RustyyES/omniguard.git
-    cd omniguard
-    ```
+### Installation and Deployment
 
-2.  **Configure the System:**
-    Run the setup script to configure your API key and environment:
-    ```bash
-    ./setup.sh
-    ```
+1. **Clone the Repository:**
+```bash
+git clone https://github.com/RustyyES/omniguard.git
+cd omniguard
 
-3.  **Start the System:**
-    Run the entire stack with a single command:
-    ```bash
-    docker compose up --build -d
-    ```
+```
 
-3.  **Access the Dashboard:**
-    Open your browser and navigate to:
-    👉 **[http://localhost:8000](http://localhost:8000)**
+
+2. **Configuration:**
+Execute the setup script to configure environment variables and API credentials:
+```bash
+./setup.sh
+
+```
+
+
+3. **Launch System:**
+Deploy the full stack using the following command:
+```bash
+docker compose up --build -d
+
+```
+
+
+4. **Access the Interface:**
+Navigate to the following address in a web browser:
+**[http://localhost:8000](https://www.google.com/search?q=http://localhost:8000)**
 
 ---
 
-## 🎮 Usage Guide
+## Usage Guide
 
-### 1. The Dashboard
-*   **Map View:** Shows your location (blue circle) and recent earthquakes (red markers).
-*   **Live Feed:** Updates instantly as new data arrives.
-*   **Alerts:** If a dangerous event is detected near you, a red alert overlay will appear with AI-generated advice.
-*   **AI Chat:** Use the chat interface in the alert overlay to ask specific questions like "Where is the nearest shelter?" or "How do I turn off gas?".
+### 1. Dashboard Overview
+
+* **Map Interface:** Visualizes the user's location and recent seismic events with categorized markers.
+* **Live Feed:** Provides instantaneous updates as new data is processed.
+* **Alert System:** High-priority events trigger an alert overlay containing AI-generated safety instructions.
+* **AI Consultation:** The integrated chat allows users to request specific information, such as shelter locations or utility shut-off procedures.
 
 ### 2. Simulation Mode
-Want to test the alerts without waiting for a real earthquake?
-1.  Go to the **Simulator** panel on the left.
-2.  Click **"Simulate Event Near Me"**.
-3.  Watch the system trigger a full alert workflow instantly!
 
-### 3. Inspecting Data
-To see the raw data stored in the database:
+To validate alert workflows without active seismic activity:
+
+1. Access the **Simulator** panel on the sidebar.
+2. Select **"Simulate Event Near Me"**.
+3. The system will initiate a full alert cycle, including AI analysis and WebSocket notification.
+
+### 3. Database Inspection
+
+To query raw data stored within the system:
+
 ```bash
 docker compose exec backend python view_db.py
+
 ```
 
 ---
 
-## 🔧 Tech Stack
+## Technical Stack
 
-*   **Language:** Python 3.13
-*   **Web Framework:** FastAPI
-*   **Message Broker:** Apache Kafka & Zookeeper
-*   **Database:** PostgreSQL 15 + PostGIS
-*   **Frontend:** HTML5, CSS3, JavaScript (ES6), Leaflet.js
-*   **AI:** Google Gemini Generative AI
-*   **Containerization:** Docker
+* **Language:** Python 3.13
+* **Backend Framework:** FastAPI
+* **Message Broker:** Apache Kafka & Zookeeper
+* **Database:** PostgreSQL 15 with PostGIS extension
+* **Frontend:** HTML5, CSS3, JavaScript (ES6), Leaflet.js
+* **Artificial Intelligence:** Google Gemini Generative AI
+* **Orchestration:** Docker
 
 ---
 
-## 📝 License
+## License
 
-This project is created for graduation project purposes.
+This project was developed for academic purposes as a Graduation Project.
+
+---
