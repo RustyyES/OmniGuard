@@ -3,7 +3,7 @@
 **OmniGuard** is a real-time, multi-source disaster monitoring platform designed to provide immediate situational awareness and automated safety guidance. It aggregates data from global seismic sources (such as USGS), processes it via an event-driven architecture, and visualizes critical information on an interactive dashboard.
 
 ---
-## Note : This project is Being Actively maintained and scaled with more Apis and Features soon , its not the Final Version Intended For June of 2026
+## Phase One of the project currently Completeled , Phase 2 is currently ongoing with two more Api Sources , Higher throughput , Local Ai instead of online and a Data Lake for raw Data
 
 
 ## Key Features
