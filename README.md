@@ -20,7 +20,7 @@
 
 ## System Architecture
 
-OmniGuard utilizes a containerized microservices architecture to ensure scalability and reliability.
+OmniGuard utilizes a containerized microservices architecture to ensure scalability and reliability
 
 ```mermaid
 graph TD
